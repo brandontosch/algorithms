@@ -1,48 +1,43 @@
-def mergesort(a):
-    _mergesort(a, 0, len(a) - 1, [None] * len(a))
+def mergesort(arr):
+    return _mergesort(arr, 0, len(arr) - 1)
 
-
-def _mergesort(a, leftStart, rightEnd, t):
-    if leftStart >= rightEnd:
+def _mergesort(arr, l, r):
+    if l >= r:
         return
-    mid = int((leftStart + rightEnd) / 2)
-    _mergesort(a, leftStart, mid, t)
-    _mergesort(a, mid + 1, rightEnd, t)
-    return merge(a, leftStart, rightEnd, t)
 
+    m = int((l + r) / 2)
 
-def merge(a, leftStart, rightEnd, t):
-    leftEnd = int((rightEnd + leftStart) / 2)
-    rightStart = leftEnd + 1
-    size = rightEnd - leftStart + 1
+    _mergesort(arr, l, m)
+    _mergesort(arr, m + 1, r)
 
-    l = leftStart
-    r = rightStart
-    i = leftStart
+    merge(arr, l, m, r)
 
-    while l <= leftEnd and r <= rightEnd:
-        if a[l] <= a[r]:
-            t[i] = a[l]
-            l += 1
+def merge(arr, l, m, r):
+    larr = arr[l:m + 1]
+    rarr = arr[m + 1:r + 1]
+
+    li = ri = 0
+    i = l
+
+    while li < len(larr) and ri < len(rarr):
+        if larr[li] < rarr[ri]:
+            arr[i] = larr[li]
+            li += 1
         else:
-            t[i] = a[r]
-            r += 1
+            arr[i] = rarr[ri]
+            ri += 1
+        i += 1
+    
+    while ri < len(rarr):
+        arr[i] = rarr[ri]
+        ri += 1
+        i += 1
+    
+    while li < len(larr):
+        arr[i] = larr[li]
+        li += 1
         i += 1
 
-    while l <= leftEnd:
-        t[i] = a[l]
-        i += 1
-        l += 1
-
-    while r <= rightEnd:
-        t[i] = a[r]
-        i += 1
-        r += 1
-
-    for x in range(leftStart, size):
-        a[x] = t[x]
-
-
-arr = [9, 5, 2, 6, 3, 10, 4, 13, 11]
-mergesort(arr)
-print(arr)
+a = [9,3,7,5,0,1,10,17,-1,4,-2]
+mergesort(a)
+print(a)
